@@ -33,3 +33,6 @@ CREATE TABLE reviews (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
 );
+
+
+ALTER TABLE reviews ADD COLUMN main_actor VARCHAR(100);

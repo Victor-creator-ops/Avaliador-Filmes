@@ -10,9 +10,21 @@ class DashboardController extends Controller {
             exit;
         }
 
+        $userId = $_SESSION['user_id'];
+        $stats = $this->model('UserStats');
+
+        $totalReviews = $stats->countReviewsByUser($userId);
+        $topGenre = $stats->topGenre($userId);
+        $topActor = $stats->topActor($userId);
+        $avgRating = $stats->averangeRating($userId);
+
         // Exibe o dashboard
         $this->view('dashboard/index', [
-            'name' => $_SESSION['user_name']
+            'name' => $_SESSION['user_name'],
+            'totalReviews' => $totalReviews,
+            'topGenre' => $topGenre,
+            'topActor' => $topActor,
+            'avgRating' => $avgRating
         ]);
     }
 }

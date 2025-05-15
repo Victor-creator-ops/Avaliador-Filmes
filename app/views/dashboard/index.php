@@ -9,9 +9,48 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h2>Bem-vindo, <?= htmlspecialchars($data['name']) ?>!</h2>
-        <p>Você está logado no Avaliador Pessoal de Filmes.</p>
-        <a href="<? BASE_URL ?>auth/logout" class="btn btn-danger mt-3">Sair</a>
+        <h2>Olá, <?= htmlspecialchars($data['name']) ?>! 🎬</h2>
+        <p class="lead">Aqui estão suas estatísticas cinéfilas:</p>
+
+        <div class="row g-4 mt-4">
+            <div class="col-md-3">
+                <div class="card border-success shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">🎥 Filmes Avaliados</h5>
+                        <p class="display-6"><?= $data['totalReviews'] ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-primary shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">🎭 Gênero Favorito</h5>
+                        <p class="display-6"><?= htmlspecialchars($data['topGenre']) ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-warning shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">⭐ Média de Notas</h5>
+                        <p class="display-6"><?= $data['avgRating'] ?>/10</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-info shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">👤 Ator Mais Visto</h5>
+                        <p class="display-6"><?= htmlspecialchars($data['topActor']) ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger mt-4">Sair</a>
     </div>
 </body>
 </html>

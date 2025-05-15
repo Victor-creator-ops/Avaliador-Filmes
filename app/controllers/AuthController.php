@@ -42,4 +42,40 @@ class AuthController extends Controller {
         session_destroy();
         header("Location: " . BASE_URL . "auth");
     }
+
+    public function create() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $name = trim($_POST['name']);
+            $email = trim($_POST['email']);
+            $password = ($_POST['password']);
+            $confirm = $_POST['confirm'];
+
+
+            // Validação Simples
+            $errors = [];
+            if (strlen($name) < 3) $errors[] = "O nome deve ter pelo menos 3 caracteres.";
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email inválido.";
+            if (strlen($password) < 6) $errors[] = "A senha deve ter no mínimo 6 caracteres.";
+            if ($password !== $confirm) $errors[] = "As senhas não coincidem.";
+
+            $userModel = $this->model('User');
+
+            if ($userModel->getByEmail($email)) {
+                $errors[] = "Email já cadastrado.";
+            }
+
+            if (count($errors) === 0) {
+                // Tudo ok -> cria o usuário
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $userModel->register($name, $email, $passwordHash);
+
+                // Redireciona para login
+                header("Location: " . BASE_URL . "auth");
+                exit;
+            } else {
+                // Envia erros para view
+                $this->view('auth/register', ['errors' => $errors, 'name' => $name, 'email' => $email]);
+            }
+        }
+    }
 }

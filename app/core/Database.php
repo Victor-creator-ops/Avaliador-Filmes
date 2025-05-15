@@ -1,6 +1,7 @@
 <?php
 
-class Database {
+class Database
+{
     // Dados do banco de dados (vem de config.php)
     private $host = DB_HOST;
     private $user = DB_USER;
@@ -11,12 +12,13 @@ class Database {
     protected $stmt; // PDO statement
 
 
-    public function __construct() {
+    public function __construct()
+    {
         // Cria o DSN (String de conexão) 
         $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname . ";charset=utf8";
-        $options [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]; // Lança exceções em caso de erro
+        $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]; // Lança exceções em caso de erro
 
-        try{
+        try {
             // Cria a conexão com PDO
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch (PDOException $e) {
@@ -25,13 +27,15 @@ class Database {
     }
 
     // Prepara uma query SQL
-    public function query($sql) {
+    public function query($sql)
+    {
         $this->stmt = $this->dbh->prepare($sql);
     }
 
     // Faz o bind de parâmetros com segurança
-    public function bind($param, $value, $type = null) {
-        if(is_null($type)) {
+    public function bind($param, $value, $type = null)
+    {
+        if (is_null($type)) {
             // Detecta o tipo do parâmetro automaticamente
             $type = match (true) {
                 is_int($value) => PDO::PARAM_INT,
@@ -44,18 +48,21 @@ class Database {
     }
 
     // Executa a query preparada
-    public function execute() {
-        return $this->stmt->execute(); 
+    public function execute()
+    {
+        return $this->stmt->execute();
     }
 
     // Retorna todos os resultados (SELECT múltiplos)
-    public function resultSet(){
+    public function resultSet()
+    {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     // Retorna um único resultado (SELECT único)
-    public function single() {
+    public function single()
+    {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
